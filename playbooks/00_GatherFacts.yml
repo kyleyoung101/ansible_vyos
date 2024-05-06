@@ -1,0 +1,15 @@
+---
+
+- name: Network Getting Started Playbook
+  hosts: firewalls
+  gather_facts: false
+  tasks:
+
+    - name: Get Config for VyOS Devices
+      vyos.vyos.vyos_facts:
+        gather_subset: config
+
+    - name: Display the Config
+      debug:
+        msg: "The Hostname is {{ ansible_net_hostname }} and the OS is {{ ansible_net_version }}"
+
