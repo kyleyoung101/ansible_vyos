@@ -22,25 +22,25 @@ The machine needs to have at least one administrative user (vyos is default, but
 The Lan interface needs an IP address so that it can be accessed through SSH. To do so:
 
 1. First, Identify which interface you wish to use as your LAN/INTERNAL interface.
-2. Choose your LAN IP range. I have chosen '''192.168.0.1/24''' as my CIDR, but you can replace with whatever IP you wish your router to have.
+2. Choose your LAN IP range. I have chosen ```192.168.0.1/24``` as my CIDR, but you can replace with whatever IP you wish your router to have.
 3. Run the following commands to configure the interface. Replace the {{ ITEMS }} including brackets with the Name/IP you have chosen to use.
 
-'''
+```
 vyos# conf
 vyos# set interface ethernet {{ eth1 }} description '{{ LAN }}'
 vyos# set interface ethernet {{ eth1 }} address 192.168.0.1/24
 vyos# commit
 vyos# save
 vyos# exit
-'''
+```
 
 4. Next, we need to enable SSH remote access. Run the following to enable SSH.
 
-'''
+```
 vyos# conf
 vyos# set service ssh port 22
 vyos# commit
 vyos# save
-'''
+```
 
 At this point, you can set a static IP in the same subnet of the LAN interface you configured, and are able to connect over SSH. 
