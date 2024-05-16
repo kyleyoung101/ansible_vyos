@@ -27,8 +27,11 @@ The Lan interface needs an IP address so that it can be accessed through SSH. To
 
 ```
 vyos# conf
+[edit]
 vyos# set interface ethernet {{ eth1 }} description '{{ LAN }}'
+[edit]
 vyos# set interface ethernet {{ eth1 }} address 192.168.0.1/24
+[edit]
 vyos# commit
 vyos# save
 vyos# exit
@@ -38,7 +41,9 @@ vyos# exit
 
 ```
 vyos# conf
+[edit]
 vyos# set service ssh port 22
+[edit]
 vyos# commit
 vyos# save
 ```
