@@ -3,27 +3,17 @@
 - hosts: firewalls
   gather_facts: true
   become: false
+  vars_files:
+    - variables.yml
   tasks:
 
-    - name: Configure WAN Interface
+    - name: Configure  Interfaces
       vyos.vyos.vyos_interfaces:
         config:
-          - name: eth0
-            description: WAN
-            enabled: true
-    
-    - name: Configure Transit interfaces
-      vyos.vyos.vyos_interfaces:
-        config:
-          - name: eth2
-            description: TRANSIT1
-            enabled: true
-          - name: eth3
-            description: TRANSIT2
-            enabled: true
-          - name: bond0
-            description: TRANSIT
-            enabled: true
+          - name: "{{ item.name }}"
+            description: "{{ item.description }}"
+            enabled: "{{ item.enabled }}"
+      loop: "{{ interfaces }}"
     
     - name: Configure Transit Bond
       vyos.vyos.vyos_config:
@@ -33,31 +23,9 @@
           - set interfaces bonding bond0 mode 802.3ad
           - set interfaces bonding bond0 address 10.125.0.1/24
         
-    - name: Configure Transit Bond VIF USER
+    - name: Configure Transit Bond VIF {{ item.name }}
       vyos.vyos.vyos_config:
         lines:
-          - set interfaces bonding bond0 vif 10 description 'USER'
-          - set interfaces bonding bond0 vif 10 address 10.125.10.1/24
-          
-    - name: Configure Transit Bond VIF WORK
-      vyos.vyos.vyos_config:
-        lines:
-          - set interfaces bonding bond0 vif 12 description 'WORK' 
-          - set interfaces bonding bond0 vif 12 address 10.125.12.1/24
-
-    - name: Configure Transit Bond VIF IOT
-      vyos.vyos.vyos_config:
-        lines:
-          - set interfaces bonding bond0 vif 20 description 'IOT'
-          - set interfaces bonding bond0 vif 20 address 10.125.20.1/24
-
-    - name: Configure Transit Bond VIF PROD
-      vyos.vyos.vyos_config:
-        lines:
-          - set interfaces bonding bond0 vif 30 description 'PROD'
-          - set interfaces bonding bond0 vif 30 address 10.125.30.1/24
-
-
-
-
-
+          - "set interfaces bonding bond0 vif {{ item.number }} description '{{ item.name }}'"
+          - "set interfaces bonding bond0 vif {{ item.number }} address {{ item.address }}"
+      loop: "{{ vlans }}"

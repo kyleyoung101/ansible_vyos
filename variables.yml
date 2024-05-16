@@ -1,0 +1,10 @@
+interfaces:
+  - name: eth2
+    description: TRANSIT1
+    enabled: true
+  - name: eth3
+    description: TRANSIT2
+    enabled: true
+  - name: bond0
+    description: TRANSIT
+    enabled: true
